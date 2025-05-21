@@ -1,0 +1,144 @@
+/* PetPal - style.css */
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #FFFBEF;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.auth-page, .welcome-page, .select-pet-page, .dashboard-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.auth-container, .select-pet-container, .welcome-container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+input, button {
+    font-size: 1em;
+    padding: 12px;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+button.btn {
+    background-color: #FFB300;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+button.btn:hover {
+    background-color: #FFA000;
+}
+
+button.btn.secondary {
+    background-color: white;
+    border: 1px solid #FFB300;
+    color: #FFB300;
+}
+
+.error-msg {
+    color: red;
+    font-size: 0.9em;
+}
+
+.pet-options {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.pet-icon {
+    width: 60px;
+    height: 60px;
+    display: block;
+    margin: 0 auto 5px;
+}
+
+.pet-name-field {
+    margin-top: 10px;
+}
+
+.dashboard-header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-content {
+    margin-top: 100px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.pet-status-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.pet-avatar {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.action-buttons form {
+    display: inline-block;
+    margin: 5px;
+}
+
+.btn.small {
+    width: auto;
+    padding: 10px 16px;
+    font-size: 0.9em;
+    border-radius: 10px;
+}
+
+.tasks-list {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    width: 250px;         /* poți ajusta valoarea în px sau % */
+    height: auto;         /* menține proporțiile imaginii */
+    display: block;
+    margin: 0 auto 20px;  /* centrează și adaugă spațiu sub logo */
+}

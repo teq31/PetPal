@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Your Pet - PetPal</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="select-pet-page">
+<div class="select-pet-container">
+    <h1>Select your new friend 🐾</h1>
+
+    <form th:action="@{/select-pet}" method="post">
+        <div class="pet-options">
+            <label>
+                <input type="radio" name="species" value="dog" required>
+                <img src="/images/dog_happy.png" alt="Dog" class="pet-icon">
+                <span>Dog</span>
+            </label>
+            <label>
+                <input type="radio" name="species" value="cat">
+                <img src="/images/cat_happy.png" alt="Cat" class="pet-icon">
+                <span>Cat</span>
+            </label>
+            <label>
+                <input type="radio" name="species" value="bunny">
+                <img src="/images/bunny_happy.png" alt="Bunny" class="pet-icon">
+                <span>Bunny</span>
+            </label>
+        </div>
+
+        <input type="text" name="name" placeholder="Enter pet name" required class="pet-name-field">
+        <button type="submit" class="btn">Continue</button>
+    </form>
+</div>
+</body>
+</html>

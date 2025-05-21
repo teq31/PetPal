@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - PetPal</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="auth-page">
+<div class="auth-container">
+    <h1>Welcome back 🐶</h1>
+    <form th:action="@{/login}" method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit" class="btn">Log In</button>
+    </form>
+    <p class="switch">Don’t have an account? <a th:href="@{/signup}">Sign Up</a></p>
+    <p th:if="${error}" th:text="${error}" class="error-msg"></p>
+</div>
+</body>
+</html>

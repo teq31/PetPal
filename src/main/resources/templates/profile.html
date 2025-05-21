@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pet & User Profile - PetPal</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-page">
+<header class="dashboard-header">
+    <h2>Profile</h2>
+    <a href="/dashboard" class="logout-btn">Back</a>
+</header>
+<main class="dashboard-content">
+    <section class="pet-status-card">
+        <h3>Pet Info</h3>
+        <form th:action="@{/profile/update-pet}" method="post">
+            <input type="text" name="name" th:value="${pet.name}" placeholder="Pet Name" required>
+            <input type="text" name="species" th:value="${pet.species}" placeholder="Species" required>
+            <button type="submit" class="btn small">Update Pet</button>
+        </form>
+        <canvas id="moodChart" width="300" height="200"></canvas>
+    </section>
+
+    <section class="tasks-list">
+        <h3>User Info</h3>
+        <form th:action="@{/profile/update-user}" method="post">
+            <input type="text" name="username" th:value="${user.username}" placeholder="Username" required>
+            <input type="password" name="password" placeholder="New Password">
+            <button type="submit" class="btn small">Update User</button>
+        </form>
+    </section>
+</main>
+
+<script>
+    const ctx = document.getElementById('moodChart');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Happy', 'Sad', 'Sick'],
+            datasets: [{
+                label: 'Mood Frequency',
+                data: [12, 3, 2], // exemplu, se va înlocui din backend
+                backgroundColor: ['#FFD54F', '#EF5350', '#90CAF9']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>
+</body>
+</html>

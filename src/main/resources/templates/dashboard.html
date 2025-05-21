@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PetPal Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dashboard-page">
+<header class="dashboard-header">
+    <h2>Hello, <span th:text="${user.username}">User</span>! 👋</h2>
+    <a href="/logout" class="logout-btn">Logout</a>
+</header>
+
+<main class="dashboard-content">
+    <section class="pet-status-card">
+        <img th:src="@{'/images/' + ${pet.species} + '_' + ${pet.mood.name().toLowerCase()} + '.png'}" alt="pet icon" class="pet-avatar">
+        <h3 th:text="${pet.name}">Fluffy</h3>
+        <p>Status: <span th:text="${pet.mood}">HAPPY</span></p>
+        <div class="action-buttons">
+            <form th:action="@{/feed}" method="post">
+                <button class="btn small">🍖 Feed</button>
+            </form>
+            <form th:action="@{/play}" method="post">
+                <button class="btn small">🎾 Play</button>
+            </form>
+            <form th:action="@{/vet}" method="post">
+                <button class="btn small">💉 Vet</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="tasks-list">
+        <h3>Today's Tasks</h3>
+        <ul>
+            <li th:each="task : ${tasks}" class="task-item">
+                <span th:text="${task.name}">Feed Fluffy</span>
+                <span th:text="${task.time}" class="task-time">08:00</span>
+            </li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

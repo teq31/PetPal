@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Today's Tasks - PetPal</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dashboard-page">
+<header class="dashboard-header">
+    <h2>Tasks for <span th:text="${pet.name}">Bobby</span></h2>
+    <a href="/dashboard" class="logout-btn">Back</a>
+</header>
+<main class="dashboard-content">
+    <section class="tasks-list">
+        <h3>Daily Tasks</h3>
+        <ul>
+            <li th:each="task : ${tasks}" class="task-item">
+                <form th:action="@{/task/check}" method="post">
+                    <input type="hidden" th:name="id" th:value="${task.id}"/>
+                    <label>
+                        <input type="checkbox" th:checked="${task.done}" onchange="this.form.submit()"/>
+                        <span th:text="${task.name}">Play with Bobby</span>
+                    </label>
+                    <span class="task-time" th:text="${task.time}">10:00</span>
+                </form>
+            </li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>
