@@ -1,16 +1,60 @@
 package com.example.PetPal.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
 
-@Getter
-@Setter
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "animals")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Animal {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String name;
-    private String species;
-    private Mood mood;
+
+    @Column(nullable = false)
+    private String species; // dog, cat, bunny
+
+    @Enumerated(EnumType.STRING)
+    private Mood mood = Mood.HAPPY;
+
+    private int happiness = 100;
+    private int health = 100;
+    private int hunger = 0;
+
+    @Column(name = "last_fed")
+    private LocalDateTime lastFed;
+
+    @Column(name = "last_played")
+    private LocalDateTime lastPlayed;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
+
+    public Animal(String name, String species, Mood mood) {
+        this.name = name;
+        this.species = species;
+        this.mood = mood;
+        this.happiness = 100;
+        this.health = 100;
+        this.hunger = 0;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 }
