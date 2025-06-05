@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -35,11 +36,44 @@ public class DashboardController {
             return "redirect:/select-pet";
         }
 
-        Animal pet = animals.get(0); // Primul animal
+        Animal pet = animals.get(0);
         model.addAttribute("pet", pet);
         model.addAttribute("tasks", generateDailyTasks(pet));
 
         return "dashboard";
+    }
+
+    @PostMapping("/feed")
+    public String feedPet(RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser();
+        List<Animal> animals = animalService.getUserAnimals(currentUser);
+        if (!animals.isEmpty()) {
+            animalService.feedAnimal(animals.get(0));
+            redirectAttributes.addAttribute("sound", "eating");
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/play")
+    public String playWithPet(RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser();
+        List<Animal> animals = animalService.getUserAnimals(currentUser);
+        if (!animals.isEmpty()) {
+            animalService.playWithAnimal(animals.get(0));
+            redirectAttributes.addAttribute("sound", "playing");
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/vet")
+    public String takeToVet(RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser();
+        List<Animal> animals = animalService.getUserAnimals(currentUser);
+        if (!animals.isEmpty()) {
+            animalService.takeToVet(animals.get(0));
+            redirectAttributes.addAttribute("sound", "crying");
+        }
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/select-pet")
@@ -59,36 +93,6 @@ public class DashboardController {
                                    @RequestParam String name) {
         User currentUser = getCurrentUser();
         animalService.createAnimal(name, species, currentUser);
-        return "redirect:/dashboard";
-    }
-
-    @PostMapping("/feed")
-    public String feedPet() {
-        User currentUser = getCurrentUser();
-        List<Animal> animals = animalService.getUserAnimals(currentUser);
-        if (!animals.isEmpty()) {
-            animalService.feedAnimal(animals.get(0));
-        }
-        return "redirect:/dashboard";
-    }
-
-    @PostMapping("/play")
-    public String playWithPet() {
-        User currentUser = getCurrentUser();
-        List<Animal> animals = animalService.getUserAnimals(currentUser);
-        if (!animals.isEmpty()) {
-            animalService.playWithAnimal(animals.get(0));
-        }
-        return "redirect:/dashboard";
-    }
-
-    @PostMapping("/vet")
-    public String takeToVet() {
-        User currentUser = getCurrentUser();
-        List<Animal> animals = animalService.getUserAnimals(currentUser);
-        if (!animals.isEmpty()) {
-            animalService.takeToVet(animals.get(0));
-        }
         return "redirect:/dashboard";
     }
 
@@ -128,7 +132,6 @@ public class DashboardController {
         currentUser.setUsername(username);
 
         if (password != null && !password.trim().isEmpty()) {
-            // Aici ar trebui să criptezi parola, dar pentru simplitate...
             currentUser.setPassword(password);
         }
 
@@ -153,7 +156,6 @@ public class DashboardController {
 
     @PostMapping("/task/check")
     public String checkTask(@RequestParam int id) {
-        // Aici poți implementa logica pentru marcarea task-urilor ca făcute
         return "redirect:/tasks";
     }
 

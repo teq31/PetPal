@@ -12,7 +12,7 @@
 </header>
 
 <main class="dashboard-content">
-    <section class="pet-status-card">
+    <section class="pet-status-card" th:data-species="${pet.species}">
         <img th:src="@{'/images/' + ${pet.species} + '_' + ${pet.mood.name().toLowerCase()} + '.png'}" alt="pet icon" class="pet-avatar">
         <h3 th:text="${pet.name}">Fluffy</h3>
         <p>Status: <span th:text="${pet.mood}">HAPPY</span></p>
@@ -39,5 +39,7 @@
         </ul>
     </section>
 </main>
+
+<script src="/js/petSounds.js"></script>
 </body>
 </html>
