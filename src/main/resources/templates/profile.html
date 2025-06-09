@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Pet & User Profile - PetPal</title>
-    <link rel="stylesheet" href="/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
@@ -21,63 +21,43 @@
     </div>
 </nav>
 
-<h2 style="text-align: center; margin-top: 30px;">Profile</h2>
+<h2>Profile</h2>
 
-<main class="profile-container">
+<main class="profile-grid">
 
-    <section class="pet-status-card">
+    <section class="profile-card">
         <h3>Pet Info</h3>
         <form th:action="@{/profile/update-pet}" method="post">
             <input type="text" name="name" th:value="${pet.name}" placeholder="Pet Name" required>
             <input type="hidden" name="species" th:value="${pet.species}">
-            <div style="padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 12px; background-color: #f5f5f5;">
+            <div class="readonly-box">
                 <strong>Pet Type:</strong> <span th:text="${pet.species}" style="text-transform: capitalize;"></span>
-                <span style="display: block; font-size: 0.8em; color: #666; margin-top: 5px;">Pet type cannot be changed</span>
+                <span class="hint">Pet type cannot be changed</span>
             </div>
-            <button type="submit" class="btn small">Update Pet Name</button>
+            <button type="submit" class="btn">Update Pet Name</button>
         </form>
         <canvas id="moodChart" width="300" height="200"></canvas>
     </section>
 
-    <section class="tasks-list">
+    <section class="profile-card">
         <h3>User Info</h3>
 
-        <!-- Adăugăm afișarea mesajelor de eroare/succes -->
-        <div th:if="${error}" class="error-msg" style="color: red; margin-bottom: 10px; padding: 8px; background-color: #ffeeee; border-radius: 5px;" th:text="${error}"></div>
-        <div th:if="${success}" style="color: green; margin-bottom: 10px; padding: 8px; background-color: #eeffee; border-radius: 5px;" th:text="${success}"></div>
+        <div th:if="${error}" class="error-msg" th:text="${error}"></div>
+        <div th:if="${success}" class="success-msg" th:text="${success}"></div>
 
         <form th:action="@{/profile/update-user}" method="post">
             <input type="hidden" name="username" th:value="${user.username}">
-            <div style="padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 12px; background-color: #f5f5f5;">
+            <div class="readonly-box">
                 <strong>Username:</strong> <span th:text="${user.username}"></span>
-                <span style="display: block; font-size: 0.8em; color: #666; margin-top: 5px;">Username cannot be changed</span>
+                <span class="hint">Username cannot be changed</span>
             </div>
             <input type="password" name="currentPassword" placeholder="Current Password" required>
             <input type="password" name="newPassword" placeholder="New Password" required>
-            <button type="submit" class="btn small">Update Password</button>
+            <button type="submit" class="btn">Update Password</button>
         </form>
     </section>
 
 </main>
-
-<script>
-    const ctx = document.getElementById('moodChart');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Happy', 'Sad', 'Sick'],
-            datasets: [{
-                label: 'Mood Frequency',
-                data: [12, 3, 2],
-                backgroundColor: ['#FFD54F', '#EF5350', '#90CAF9']
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true } }
-        }
-    });
-</script>
 
 </body>
 </html>
