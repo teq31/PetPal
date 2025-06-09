@@ -1,11 +1,13 @@
 package com.example.PetPal.service;
 
+import com.example.PetPal.dto.PublicProfileDTO;
 import com.example.PetPal.model.User;
 import com.example.PetPal.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,7 +25,6 @@ public class UserService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-
         return userRepository.save(user);
     }
 
@@ -38,5 +39,28 @@ public class UserService {
 
     public User updateUser(User user) {
         return userRepository.save(user);
+    }
+
+    public List<PublicProfileDTO> getAllPublicProfiles() {
+        return userRepository.findAll().stream()
+                .filter(u -> u.getAnimal() != null)
+                .map(u -> new PublicProfileDTO(
+                        u.getId(),
+                        u.getUsername(),
+                        u.getAnimal().getName(),
+                        u.getAnimal().getSpecies(),
+                        u.getAnimal().getMood() != null ? u.getAnimal().getMood().toString() : "UNKNOWN"
+                ))
+                .toList();
+    }
+
+    public User authenticateUser(String username, String password) {
+        return userRepository.findByUsername(username)
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
+                .orElse(null);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

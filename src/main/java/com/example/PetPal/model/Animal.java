@@ -1,9 +1,11 @@
 package com.example.PetPal.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "owner")
 public class Animal {
 
     @Id
@@ -22,7 +25,7 @@ public class Animal {
     private String name;
 
     @Column(nullable = false)
-    private String species; // dog, cat, bunny
+    private String species;
 
     @Enumerated(EnumType.STRING)
     private Mood mood = Mood.HAPPY;
@@ -40,9 +43,11 @@ public class Animal {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
+
 
     public Animal(String name, String species, Mood mood) {
         this.name = name;

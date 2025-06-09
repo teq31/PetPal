@@ -6,12 +6,29 @@
     <link rel="stylesheet" href="/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="dashboard-page">
-<header class="dashboard-header">
-    <h2>Profile</h2>
-    <a href="/dashboard" class="logout-btn">Back</a>
-</header>
-<main class="dashboard-content">
+<body>
+
+<!-- ✅ Navbar complet -->
+<nav class="navbar">
+    <div class="nav-container">
+        <span class="logo">🐾 PetPal</span>
+        <ul class="nav-links">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/chat_overview.html">My Chats</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ✅ Titlu sub navbar, centrat -->
+<h2 style="text-align: center; margin-top: 30px;">Profile</h2>
+
+<!-- ✅ Conținutul paginii, centrat și aerisit -->
+<main class="profile-container">
+
+    <!-- 🐾 Pet Info -->
     <section class="pet-status-card">
         <h3>Pet Info</h3>
         <form th:action="@{/profile/update-pet}" method="post">
@@ -22,6 +39,7 @@
         <canvas id="moodChart" width="300" height="200"></canvas>
     </section>
 
+    <!-- 👤 User Info -->
     <section class="tasks-list">
         <h3>User Info</h3>
         <form th:action="@{/profile/update-user}" method="post">
@@ -30,8 +48,10 @@
             <button type="submit" class="btn small">Update User</button>
         </form>
     </section>
+
 </main>
 
+<!-- ✅ Chart.js pentru grafic -->
 <script>
     const ctx = document.getElementById('moodChart');
     new Chart(ctx, {
@@ -40,7 +60,7 @@
             labels: ['Happy', 'Sad', 'Sick'],
             datasets: [{
                 label: 'Mood Frequency',
-                data: [12, 3, 2], // exemplu, se va înlocui din backend
+                data: [12, 3, 2], // <- înlocuit cu date reale în backend
                 backgroundColor: ['#FFD54F', '#EF5350', '#90CAF9']
             }]
         },
@@ -50,5 +70,6 @@
         }
     });
 </script>
+
 </body>
 </html>

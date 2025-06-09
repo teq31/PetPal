@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Explore Users - PetPal</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <span class="logo">🐾 PetPal</span>
+        <ul class="nav-links">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/chat_overview">My Chats</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="chat-container">
+    <h2>Explore Pet Owners</h2>
+    <div id="user-list">
+        <div th:each="profile : ${profiles}" class="chat-user"
+             th:onclick="'window.location.href=\'/chat?senderId=' + ${currentUserId} + '&receiverId=' + ${profile.userId} + '\''">
+            <span class="username" th:text="${profile.username}">Username</span> —
+            <span class="preview" th:text="${profile.petName} + ' the ' + ${profile.species}">Fluffy the cat</span>
+        </div>
+    </div>
+</main>
+</body>
+</html>

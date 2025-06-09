@@ -1,5 +1,6 @@
 package com.example.PetPal.config;
 
+import com.example.PetPal.security.CustomLoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,23 +14,28 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    private final CustomLoginSuccessHandler customLoginSuccessHandler;
+
+    public SecurityConfig(CustomLoginSuccessHandler handler) {
+        this.customLoginSuccessHandler = handler;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/welcome", "/login", "/signup", "/style.css",
-                                "/images/**", "/js/**",
-                                "/cryingSounds/**", "/eatingSounds/**", "/playingSounds/**").permitAll()
+                        .requestMatchers(
+                                "/", "/welcome", "/login", "/signup", "/style.css",
+                                "/images/**", "/js/**", "/cryingSounds/**",
+                                "/eatingSounds/**", "/playingSounds/**",
+                                "/chat/**"  // ✅ Permite accesul la toate rutele din chat controller
+                        ).permitAll()
+                        .requestMatchers("/explore", "/chat_overview", "/api/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .successHandler(customLoginSuccessHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
@@ -40,10 +46,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .permitAll()
                 )
-                .sessionManagement(session -> session
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(false)
-                );
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }

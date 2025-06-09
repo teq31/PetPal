@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat - PetPal</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- ✅ Navbar consistent -->
+<nav class="navbar">
+    <div class="nav-container">
+        <span class="logo">🐾 PetPal</span>
+        <ul class="nav-links">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/chat_overview">My Chats</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ✅ Titlu sub navbar -->
+<h2 style="text-align: center; margin-top: 30px;">
+    Chat with <span id="receiverUsername"></span>
+</h2>
+
+<!-- ✅ Container chat frumos stilizat -->
+<div class="chat-container">
+    <div id="chat-box"></div>
+
+    <div style="display: flex; margin-top: 15px;">
+        <input type="text" id="messageInput" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<!-- ✅ Script Thymeleaf -->
+<script th:inline="javascript">
+    const senderId = [[${senderId}]];
+    const receiverId = [[${receiverId}]];
+    const senderUsername = [[${senderUsername}]];
+    const receiverUsername = [[${receiverUsername}]];
+
+</script>
+
+<script>
+    document.getElementById("receiverUsername").innerText = receiverUsername;
+
+    async function loadMessages() {
+        const res = await fetch(`/chat/conversation?user1Id=${senderId}&user2Id=${receiverId}`);
+        const messages = await res.json();
+        const box = document.getElementById("chat-box");
+        box.innerHTML = '';
+
+        messages.forEach(m => {
+            const div = document.createElement('div');
+
+            // 🛠️ corect: m.senderId, nu m.sender.id
+            div.classList.add("message-box");
+            div.classList.add(m.senderId === senderId ? "you" : "other");
+
+            const date = new Date(m.timestamp);
+            const hour = isNaN(date.getHours()) ? "00" : String(date.getHours()).padStart(2, '0');
+            const minute = isNaN(date.getMinutes()) ? "00" : String(date.getMinutes()).padStart(2, '0');
+            const time = `${hour}:${minute}`;
+
+            div.innerHTML = `
+            <div class="msg-username">${m.senderUsername}</div>
+            <div class="msg-content">${m.content}</div>
+            <div class="msg-time">${time}</div>
+        `;
+
+            box.appendChild(div);
+        });
+
+        box.scrollTop = box.scrollHeight;
+    }
+
+
+    async function sendMessage() {
+        const msg = document.getElementById("messageInput").value;
+        if (!msg.trim()) return;
+        await fetch(`/chat/send?senderId=${senderId}&receiverId=${receiverId}&content=${encodeURIComponent(msg)}`, {
+            method: "POST"
+        });
+        document.getElementById("messageInput").value = "";
+        await loadMessages();
+    }
+
+    loadMessages();
+    setInterval(loadMessages, 3000);
+</script>
+
+</body>
+</html>

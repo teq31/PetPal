@@ -6,6 +6,18 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body class="dashboard-page">
+<nav class="navbar">
+    <div class="nav-container">
+        <span class="logo">🐾 PetPal</span>
+        <ul class="nav-links">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/chat_overview.html">My Chats</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
 <header class="dashboard-header">
     <h2>Tasks for <span th:text="${pet.name}">Bobby</span></h2>
     <a href="/dashboard" class="logout-btn">Back</a>

@@ -5,15 +5,34 @@
     <title>PetPal Dashboard</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body class="dashboard-page">
-<header class="dashboard-header">
-    <h2>Hello, <span th:text="${user.username}">User</span>! 👋</h2>
-    <a href="/logout" class="logout-btn">Logout</a>
-</header>
+<body>
 
-<main class="dashboard-content">
+<!-- ✅ Navbar consistent -->
+<nav class="navbar">
+    <div class="nav-container">
+        <span class="logo">🐾 PetPal</span>
+        <ul class="nav-links">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/chat_overview">My Chats</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ✅ Titlu principal sub navbar -->
+<h2 style="text-align: center; margin-top: 30px;">
+    Hello, <span th:text="${user.username}">User</span>! 👋
+</h2>
+
+<!-- ✅ Conținut principal centrat -->
+<main class="profile-container">
+
+    <!-- 🐾 Pet Status Card -->
     <section class="pet-status-card" th:data-species="${pet.species}">
-        <img th:src="@{'/images/' + ${pet.species} + '_' + ${pet.mood.name().toLowerCase()} + '.png'}" alt="pet icon" class="pet-avatar">
+        <img th:src="@{'/images/' + ${pet.species} + '_' + ${pet.mood.name().toLowerCase()} + '.png'}"
+             alt="pet icon" class="pet-avatar">
         <h3 th:text="${pet.name}">Fluffy</h3>
         <p>Status: <span th:text="${pet.mood}">HAPPY</span></p>
         <div class="action-buttons">
@@ -29,6 +48,7 @@
         </div>
     </section>
 
+    <!-- 📋 Task List -->
     <section class="tasks-list">
         <h3>Today's Tasks</h3>
         <ul>
@@ -38,6 +58,7 @@
             </li>
         </ul>
     </section>
+
 </main>
 
 <script src="/js/petSounds.js"></script>
