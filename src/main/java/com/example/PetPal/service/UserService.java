@@ -60,6 +60,11 @@ public class UserService {
                 .orElse(null);
     }
 
+    public User updatePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        return userRepository.save(user);
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

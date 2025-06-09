@@ -127,15 +127,23 @@ public class DashboardController {
 
     @PostMapping("/profile/update-user")
     public String updateUser(@RequestParam String username,
-                             @RequestParam(required = false) String password) {
+                             @RequestParam(required = true) String currentPassword,
+                             @RequestParam(required = true) String newPassword,
+                             RedirectAttributes redirectAttributes) {
         User currentUser = getCurrentUser();
-        currentUser.setUsername(username);
 
-        if (password != null && !password.trim().isEmpty()) {
-            currentUser.setPassword(password);
+        if (!userService.validateUser(currentUser.getUsername(), currentPassword)) {
+            redirectAttributes.addFlashAttribute("error", "Current password is incorrect");
+            return "redirect:/profile";
         }
 
-        userService.updateUser(currentUser);
+        currentUser.setUsername(username);
+
+        if (newPassword != null && !newPassword.trim().isEmpty()) {
+            userService.updatePassword(currentUser, newPassword);
+        }
+
+        redirectAttributes.addFlashAttribute("success", "Password updated successfully");
         return "redirect:/profile";
     }
 
