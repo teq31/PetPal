@@ -1,13 +1,54 @@
+<!-- src/main/resources/templates/dashboard.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>PetPal Dashboard</title>
     <link rel="stylesheet" href="/style.css">
+    <style>
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .task-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .status-overdue {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .status-upcoming {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .task-time {
+            font-weight: bold;
+        }
+
+        .view-all-tasks {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
 
-<!-- ✅ Navbar consistent -->
+<!-- Navbar consistent -->
 <nav class="navbar">
     <div class="nav-container">
         <span class="logo">🐾 PetPal</span>
@@ -21,20 +62,44 @@
     </div>
 </nav>
 
-<!-- ✅ Titlu principal sub navbar -->
+<!-- Titlu principal sub navbar -->
 <h2 style="text-align: center; margin-top: 30px;">
     Hello, <span th:text="${user.username}">User</span>! 👋
 </h2>
 
-<!-- ✅ Conținut principal centrat -->
+<!-- Conținut principal centrat -->
 <main class="profile-container">
 
-    <!-- 🐾 Pet Status Card -->
+    <!-- Pet Status Card -->
     <section class="pet-status-card" th:data-species="${pet.species}">
         <img th:src="@{'/images/' + ${pet.species} + '_' + ${pet.mood.name().toLowerCase()} + '.png'}"
+             onerror="this.src='/images/dog_happy.png'; this.onerror=null;"
              alt="pet icon" class="pet-avatar">
         <h3 th:text="${pet.name}">Fluffy</h3>
         <p>Status: <span th:text="${pet.mood}">HAPPY</span></p>
+        <div class="pet-stats">
+            <div class="stat">
+                <span>Happiness:</span>
+                <div class="progress-bar">
+                    <div class="progress" th:style="'width: ' + ${pet.happiness} + '%'"
+                         th:text="${pet.happiness} + '%'"></div>
+                </div>
+            </div>
+            <div class="stat">
+                <span>Health:</span>
+                <div class="progress-bar">
+                    <div class="progress" th:style="'width: ' + ${pet.health} + '%'"
+                         th:text="${pet.health} + '%'"></div>
+                </div>
+            </div>
+            <div class="stat">
+                <span>Hunger:</span>
+                <div class="progress-bar">
+                    <div class="progress" th:style="'width: ' + ${pet.hunger} + '%'"
+                         th:text="${pet.hunger} + '%'"></div>
+                </div>
+            </div>
+        </div>
         <div class="action-buttons">
             <form th:action="@{/feed}" method="post">
                 <button class="btn small">🍖 Feed</button>
@@ -48,19 +113,51 @@
         </div>
     </section>
 
-    <!-- 📋 Task List -->
+    <!-- Task List -->
     <section class="tasks-list">
         <h3>Today's Tasks</h3>
-        <ul>
-            <li th:each="task : ${tasks}" class="task-item">
+        <div th:if="${tasks.empty}">
+            <p>No tasks for today.</p>
+        </div>
+        <div th:each="task : ${tasks}" class="task-item">
+            <div>
                 <span th:text="${task.name}">Feed Fluffy</span>
-                <span th:text="${task.time}" class="task-time">08:00</span>
-            </li>
-        </ul>
+                <span class="task-time" th:text="${task.formattedTimeRange}">08:00 - 11:00</span>
+            </div>
+            <span class="task-status"
+                  th:classappend="${task.done ? 'status-completed' : (task.isPastDue() ? 'status-overdue' : (task.isInTimeWindow() ? 'status-active' : 'status-upcoming'))}"
+                  th:text="${task.done ? 'Completed' : (task.isPastDue() ? 'Overdue' : (task.isInTimeWindow() ? 'Active' : 'Upcoming'))}">
+        </span>
+        </div>
+        <div class="view-all-tasks">
+            <a href="/tasks" class="btn small">View All Tasks</a>
+        </div>
     </section>
 
 </main>
 
 <script src="/js/petSounds.js"></script>
+
+<style>
+    .progress-bar {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .progress {
+        height: 20px;
+        background-color: #4CAF50;
+        border-radius: 5px;
+        text-align: center;
+        line-height: 20px;
+        color: white;
+    }
+
+    .stat {
+        margin: 10px 0;
+    }
+</style>
 </body>
 </html>

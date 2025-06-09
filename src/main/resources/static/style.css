@@ -410,3 +410,38 @@ main.profile-container, .dashboard-content {
     background-color: #e0e0e0;
 }
 
+.status-completed {
+    background-color: #4caf50;
+    color: white;
+}
+
+.status-overdue {
+    background-color: #f44336;
+    color: white;
+}
+
+.status-upcoming {
+    background-color: #2196f3;
+    color: white;
+}
+
+.task-time {
+    font-weight: bold;
+}
+
+.status-active {
+    background-color: #ff9800;
+    color: white;
+}
+
+.task-item.active {
+    background-color: #fff3e0;
+    border-left: 4px solid #ff9800;
+}
+
+.task-action-required {
+    color: #f44336;
+    font-style: italic;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
